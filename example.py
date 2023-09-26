@@ -17,6 +17,7 @@ def get_title(sc) :
   # for pixel in area :
   #   if pixel in colors :
   #     return pixel
+  # return white
   # might try superpose different exercises to check if one pixel could get it completely
 
 def colorToFetch(sc) :
