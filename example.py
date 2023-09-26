@@ -9,7 +9,7 @@ def get_screen() :
     # for test: print(filename, end=': ')
 
 def is_biting(sc: PIL.Image):
-  # is slowness icon on
+  # is slowness icon on (one or two pixels might be enough)
   # return sc.crop((...))
   return True
 
@@ -17,6 +17,7 @@ def get_title(sc) :
   # for pixel in area :
   #   if pixel in colors :
   #     return pixel
+  # might try superpose different exercises to check if one pixel could get it completely
 
 def colorToFetch(sc) :
   # Get color of title
