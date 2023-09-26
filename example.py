@@ -32,11 +32,24 @@ def get_cursor(sc) :
   #  if pixel == black :
   #    return pos
 
+def validate_fishing(sc) :
+  for pixel in fishing_area :
+    if pixel == red : 
+      if testing :
+        print(' already fishing')
+      return
+  if testing :
+    print(' because not fishing, clicking')
+  else :
+    click()
+
+
 def fish() :
   sc = get_screen()
   if not is_biting(sc) :
     if testing :
-      print('notBiting')
+      print('notBiting', end='')
+    validate_fishing(sc)
     return
 
   color = colorToFetch(sc)
@@ -44,9 +57,11 @@ def fish() :
   (x, y) = get_cursor(sc)
 
   if sc.pixel((x, y+1)) == color :
-    # clic
+    
     if testing :
       print('[OK]') # add colors might help visualise
+    else :
+      click()
     return
   if testing :
     print('[KO]')
