@@ -44,11 +44,11 @@ def parser(sub) :
     miner_parser = sub.add_parser('miner',
             help='Mining automata for generators that require to go left-right (forward-backward..).\nDoes not handle your durability')
 
-    miner_parser.add_argument('--left', '-l', default='a', 
+    miner_parser.add_argument('--left', '-l', default='a', metavar='key',
             help='The key you press to go left')
-    miner_parser.add_argument('--right', '-r', default='d', 
+    miner_parser.add_argument('--right', '-r', default='d', metavar='key',
             help='The key you press to go right')
-    miner_parser.add_argument('--length', '-L', default=5, type=int,
+    miner_parser.add_argument('--length', '-L', default=5, type=int, metavar='n',
             help='The length of the mining area')
 
     miner_parser.set_defaults(fun=launch_mine)
