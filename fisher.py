@@ -137,16 +137,39 @@ def fish() :
   color = colorToFetch(sc)
   return catchfish(sc, color)
 
+def fishing() :
+    global enoughDura
+    try:
+        enoughDura = not is_low_durability(get_screen())
+        # start loop
+        while enoughDura :
+          cause = ''
+          sc = fish()
+          if cause != '' :
+            print(cause)
+          counter += 1
+        print('Low durability, stop fishing')
+    except KeyboardInterrupt :
+        print('\nFishing session is now over.')
+        print('Have a nice day!')
+    return
+
+def launch_fish(args) :
+    try:
+        res = pyautogui.confirm(text='Press OK to start fishing', title='Minecraft Fisher')
+        if res != 'OK' :
+            print('Canceling Fishing session')
+            return
+        time.sleep(1)
+        fishing()
+    except KeyboardInterrupt :
+        print('Cancelling Fishing session')
+
+def parser(sub) :
+    fisher_parser = sub.add_parser('fisher',
+            help='A Fishing automata that detects if you are fishing by analysing the screen, will stop when low durability')
+
+    fisher_parser.set_defaults(fun=launch_fish)
 
 if __name__ == '__main__' :
-    # sleep for 2/3s for time to switch
-    time.sleep(5)
-    # start loop
-    enoughDura = not is_low_durability(get_screen())
-    while enoughDura :
-      cause = ''
-      sc = fish()
-      if cause != '' :
-        print(cause)
-      counter += 1
-    print('Low durability, stop fishing')
+    launch_fish(None)

@@ -3,31 +3,58 @@ import random as rd
 import time
 
 
-def mine():
+def mine(args):
     """
     Press left click and hold
-    Then alternate 'A' and 'D' keys for a random amount of time between 0.1 and 0.8 seconds
+    Then alternate @args.left and @args.right keys for a random amount of time between 0.1 and 0.8 seconds
     """
-    pyautogui.alert(text='Press OK to start mining', title='Minecraft Miner', button='OK')
-    time.sleep(1)
-    pyautogui.moveTo(None, 0, 0.5)
     pyautogui.mouseDown()
     try:
         while True :
-            pyautogui.keyDown('a')
+            pyautogui.keyDown(args.left)
             time.sleep(rd.uniform(0.5, 0.8))
-            pyautogui.keyUp('a')
+            pyautogui.keyUp(args.left)
+            
             time.sleep(rd.uniform(0.0, 0.2))
-            pyautogui.keyDown('d')
+            
+            pyautogui.keyDown(args.right)
             time.sleep(rd.uniform(0.5, 0.8))
+            pyautogui.keyUp(args.right)
 
-            pyautogui.keyUp('d')
     except KeyboardInterrupt:
-        pyautogui.keyUp('a')
-        pyautogui.keyUp('d')
+        pyautogui.keyUp(args.left)
+        pyautogui.keyUp(args.right)
         pyautogui.mouseUp()
+        print('\nMining session is now over.')
+        print('Have a nice day!')
     return
+
+def launch_mine(args) :
+    try:
+        res = pyautogui.confirm(text='Press OK to start mining', title='Minecraft Miner')
+        if res != 'OK' :
+            print('Canceling Mining session')
+            return
+        time.sleep(1)
+        mine(args)
+    except KeyboardInterrupt :
+        print('Cancelling Mining session')
+
+def parser(sub) :
+    miner_parser = sub.add_parser('miner',
+            help='Mining automata for generators that require to go left-right (forward-backward..).\nDoes not handle your durability')
+
+    miner_parser.add_argument('--left', '-l', default='a', 
+            help='The key you press to go left')
+    miner_parser.add_argument('--right', '-r', default='d', 
+            help='The key you press to go right')
+    miner_parser.add_argument('--length', '-L', default=5, type=int,
+            help='The length of the mining area')
+
+    miner_parser.set_defaults(fun=launch_mine)
 
 
 if __name__ == "__main__":
-    mine()
+    launch_mine(None)
+
+
