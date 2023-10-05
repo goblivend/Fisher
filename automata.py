@@ -5,8 +5,9 @@ import argparse
 
 import miner
 import fisher
+import condenser
 
-FEATURES = [miner, fisher]
+FEATURES = [miner, fisher, condenser]
 
 def global_parser() :
     parser = argparse.ArgumentParser(
@@ -24,5 +25,3 @@ if __name__ == '__main__' :
 
     args = p.parse_args()
     args.fun(args)
-
-
