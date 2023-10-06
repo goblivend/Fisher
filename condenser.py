@@ -3,16 +3,17 @@ import random as rd
 import time
 
 FIRST_CRAFT_POS = (684, 444)
-CRAFT_SLOT_SIZE = (51, 51)
+SLOT_SIZE = (51, 51)
 RESULT_POS = (1201, 448)
+EMPTY_SLOT_COLOR = (139, 139, 139)
 
 def randomize(pos) :
     return (rd.randint(10)-5 + pos[0], 
             rd.randint(10)-5 + pos[1])
 
 def get_pos(r, c) :
-    return (FIRST_CRAFT_POS[0]+CRAFT_POS_SIZE[0]*c,
-            FIRST_CRAFT_POS[1]+CRAFT_POS_SIZE[1]*r)
+    return (FIRST_CRAFT_POS[0]+SLOT_SIZE[0]*c,
+            FIRST_CRAFT_POS[1]+SLOT_SIZE[1]*r)
 
 def shiftClickOn(pos) :
     pyautogui.moveTo(pos[0], pos[1], rd.uniform(0.1, 0.3), pyautogui.easeInOutQuad))
@@ -30,6 +31,11 @@ def condense(args):
         for _ in range(args.craftPerBatch) :
             # shift click on good craft
             shiftClickOn(randomize(get_pos(args.row, args.column)))
+            # if nothing in result runcmd and return
+            if pyautogui.screenshot().getpixel(RESULT_POS) == EMPTY_SLOT_COLOR :
+                runDevCmd()
+                print('No more item')
+                return
             # shift click on result
             shiftClickOn(randomie(RESULT_POS))
         # Open command and execute previous to store
