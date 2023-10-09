@@ -16,7 +16,7 @@ def get_pos(r, c) :
             FIRST_CRAFT_POS[1]+SLOT_SIZE[1]*r)
 
 def shiftClickOn(pos) :
-    pyautogui.moveTo(pos[0], pos[1], rd.uniform(0.1, 0.3), pyautogui.easeInOutQuad))
+    pyautogui.moveTo(pos[0], pos[1], rd.uniform(0.1, 0.3), pyautogui.easeInOutQuad)
     pyautogui.keyDown('shift')
     pyautogui.click(button=left)
     pyautogui.keyDown('shift')
@@ -64,7 +64,7 @@ def parser(sub) :
             help='The row in the crafting book where the craft is located')
     condenser_parser.add_argument('--nb', '-n', default='5', metavar='n', type=int,
             help='The number of craft batch to do')
-    condenser_parser.add_argument('--batch', '-b', default='4', metavar='n', type=int, dest='craftPerBatch'
+    condenser_parser.add_argument('--batch', '-b', default='4', metavar='n', type=int, dest='craftPerBatch',
             help='The number of crafts per batch to do')
     condenser_parser.add_argument('--cmd', '-C', default='shiftright', metavar='key',
             help='The key you press to open the cmd input')
