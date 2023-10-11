@@ -3,8 +3,8 @@ import random as rd
 import time
 
 
-def takeABreak(t: int) :
-    print('Taking a', t, 's break')
+def takeABreak(t) :
+    print('Taking a', round(t, 2), 's break')
     pyautogui.mouseUp()
     time.sleep(t)
     pyautogui.mouseDown()
@@ -57,7 +57,7 @@ def mine(args):
 def validate_breaks(args) :
     if len(args.break_times) != 2 * len(args.break_chances) :
         print('Invalid size of `--break-time` {}, compared to `--break-chances` {}'.format(len(args.break_times), len(args.break_chances)))
-        return false
+        return False
 
     valid = True
     for i in range(len(args.break_chances)) :
@@ -94,9 +94,9 @@ def parser(sub) :
             help='The length of the mining area')
     miner_parser.add_argument('--time', '-t', default=-1, type=int, metavar='n',
         help='Time to mine in seconds (-1 for infinite)')
-    miner_parser.add_argument('--break-chances', '-b', default=[], type=int, metavar='n', nargs='*',
+    miner_parser.add_argument('--break-chances', '-b', default=[5], type=int, metavar='n', nargs='*',
             help='Chances to take a break while mining: matching --breack-time times (0 for none, must be half of --break-times length)')
-    miner_parser.add_argument('--break-times', '-T', default=[], type=float, metavar='n', nargs='*', 
+    miner_parser.add_argument('--break-times', '-T', default=[1, 2], type=float, metavar='n', nargs='*', 
         help='Bounds of breaks, must be twice as big as --break-chances (1 min and 1 max per chance)')
     
 
