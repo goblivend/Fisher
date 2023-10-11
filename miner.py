@@ -1,7 +1,30 @@
 import pyautogui
 import random as rd
 import time
+import PIL
+from PIL import Image
 
+
+MAIN_REGION=(500, 500, 1500, 1000)
+
+
+def checkValidity(args) :
+    pixels = {
+        'ores': [],
+        'obsi': [],
+        'neth': []
+    }
+    sc = pyautogui.screenshot(region=MAIN_REGION)
+    for pix in pixels[args.blocks] :
+        inSc = False
+        for pixel in sc.getdata():
+            if pixel == pix :
+                inSc = True
+                break
+        if not inSc :
+            print('\a')
+            return False
+    return True
 
 def takeABreak(t) :
     print('Taking a', round(t, 2), 's break')
@@ -18,6 +41,12 @@ def takeBreaks(args) :
         if rd.randint(0, chances[i]) == 0 :
             takeABreak(rd.uniform(times[2*i], times[2*i+1]))
 
+def move(key, t) :
+    pyautogui.keyDown(key)
+    time.sleep(t)
+    pyautogui.keyUp(key)
+
+
 def mine(args):
     """
     Press left click and hold
@@ -30,17 +59,21 @@ def mine(args):
             if args.time > 0 and time.time() - start > args.time :
                 print('Mined for {} seconds'.format(time.time() - start))
                 raise KeyboardInterrupt
+
             takeBreaks(args)
-
-            pyautogui.keyDown(args.left)
-            time.sleep(rd.uniform(0.5, 0.8))
-            pyautogui.keyUp(args.left)
-
+            if not checkValidity(args) :
+                print('No blocks to mine')
+                raise KeyboardInterrupt
+            
+            move(args.left,rd.uniform(0.5, 0.8))
             time.sleep(rd.uniform(0.0, 0.2))
+
             takeBreaks(args)
-            pyautogui.keyDown(args.right)
-            time.sleep(rd.uniform(0.5, 0.8))
-            pyautogui.keyUp(args.right)
+            if not checkValidity(args) :
+                print('No blocks to mine')
+                raise KeyboardInterrupt
+
+            move(args.right,rd.uniform(0.5, 0.8))
 
     except KeyboardInterrupt:
         pyautogui.keyUp(args.left)
@@ -94,14 +127,12 @@ def parser(sub) :
             help='The length of the mining area')
     miner_parser.add_argument('--time', '-t', default=-1, type=int, metavar='n',
         help='Time to mine in seconds (-1 for infinite)')
-    miner_parser.add_argument('--break-chances', '-b', default=[5], type=int, metavar='n', nargs='*',
+    miner_parser.add_argument('--break-chances', '-B', default=[1], type=int, metavar='n', nargs='*',
             help='Chances to take a break while mining: matching --breack-time times (0 for none, must be half of --break-times length)')
-    miner_parser.add_argument('--break-times', '-T', default=[1, 2], type=float, metavar='n', nargs='*', 
+    miner_parser.add_argument('--break-times', '-T', default=[0.1, 0.4], type=float, metavar='n', nargs='*', 
         help='Bounds of breaks, must be twice as big as --break-chances (1 min and 1 max per chance)')
-    
-
-
-
+    miner_parser.add_argument('--blocks', '-b', default='ores', metavar='type', choices=['ores', 'obsi', 'neth'],
+        help='Blocks to be looking for in field of vision')
 
     miner_parser.set_defaults(fun=launch_mine)
 
