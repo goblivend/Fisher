@@ -10,7 +10,7 @@ MAIN_REGION=(500, 500, 1500, 1000)
 
 def checkValidity(args) :
     pixels = {
-        'ores': [],
+        'ores': [(139, 139, 139)],
         'obsi': [],
         'neth': []
     }
