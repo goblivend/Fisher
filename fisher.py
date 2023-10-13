@@ -139,6 +139,7 @@ def fish() :
 
 def fishing() :
     global enoughDura
+    global counter
     try:
         enoughDura = not is_low_durability(get_screen())
         # start loop

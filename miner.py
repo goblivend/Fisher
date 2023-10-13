@@ -139,3 +139,8 @@ def parser(sub) :
 
 if __name__ == "__main__":
     launch_mine(None)
+
+# 74.6% / 1.49m
+#80xp/s for basic
+# 84 for advanced
+# 103 for epic advanced
